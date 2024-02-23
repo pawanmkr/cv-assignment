@@ -1,10 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
-
 import dotenv from 'dotenv';
-dotenv.config();
 
+import playerRouter from "./route.js";
+import { check_connection } from "./config/postgres.js";
+
+dotenv.config();
 const port = process.env.PORT;
 
 const app = express();
@@ -32,7 +34,10 @@ app.use("/health", (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
+app.use("/players", playerRouter);
 
 app.listen(port, () => {
   console.log("> Server is listening on port:", port);
 });
+
+check_connection();
