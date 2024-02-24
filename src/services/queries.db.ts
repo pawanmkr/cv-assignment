@@ -1,4 +1,4 @@
-import { count, eq, sql } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import db from "../config/postgres.js";
 import player from "../schema/player.js";
 
@@ -20,7 +20,7 @@ export class Player {
     return await db
       .select()
       .from(player)
-      .orderBy();
+      .orderBy(desc(player.score));
   }
 
   static async deletePlayer(id: number) {
@@ -33,12 +33,14 @@ export class Player {
     const res = await db
       .update(player)
       .set({
-        name,
-        score
+        name: name,
+        score: score,
+        updated_at: new Date()
       })
       .where(eq(player.id, id))
+      .returning();
 
-    return res.rows[0];
+    return res[0];
   }
 
   static async getPlayer(id: number) {
@@ -57,11 +59,19 @@ export class Player {
   static async getPlayersCount() {
     const res = await db
       .select({
-        total_players: count(sql`SELECT * FROM player;`)
+        total_players: count(player.id)
       })
       .from(player)
       .execute();
 
     return res[0].total_players;
+  }
+
+  static async getTheOnlyPlayer() {
+    const res = await db
+      .select()
+      .from(player);
+
+    return res[0];
   }
 };

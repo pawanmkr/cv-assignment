@@ -11,13 +11,13 @@ import {
 const playerRouter = express.Router();
 
 
-playerRouter.post("/", createNewPlayer);
-playerRouter.get("/", listPlayers);
-playerRouter.put("/:id", updatePlayer);
-playerRouter.delete("/:id", deletePlayer);
+playerRouter.post("/", createNewPlayer); // done
+playerRouter.get("/", listPlayers); // done
+playerRouter.put("/:id", updatePlayer); // done
+playerRouter.delete("/:id", deletePlayer); //done
 
-playerRouter.get("/rank/:val", fetchPlayerByRank);
-playerRouter.get("/random", fetchRandomPlayer);
+playerRouter.get("/rank/:val", fetchPlayerByRank); // pending
+playerRouter.get("/random", fetchRandomPlayer); // pending
 
 
 export default playerRouter;
